@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private PongGame1v1 pongGame1v1;
     private Button computerButton, oneVOneButton;
     private FrameLayout gameContainer;
+    private boolean isInGameMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         gameContainer.removeAllViews();
         pongGame = new PongGame(this);
         gameContainer.addView(pongGame);
+        isInGameMode = true;  // Set flag to indicate game mode
         Toast.makeText(this, "Computer mode started", Toast.LENGTH_SHORT).show();
     }
 
@@ -49,7 +51,19 @@ public class MainActivity extends AppCompatActivity {
         gameContainer.removeAllViews();
         pongGame1v1 = new PongGame1v1(this);
         gameContainer.addView(pongGame1v1);
+        isInGameMode = true;  // Set flag to indicate game mode
         Toast.makeText(this, "1v1 mode started", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isInGameMode) {
+            // Exit the game mode and return to main menu
+            gameContainer.removeAllViews(); // Clear the game view
+            isInGameMode = false; // Reset flag
+            Toast.makeText(this, "Returned to main menu", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed(); // If not in game mode, perform default back action
+        }
+    }
 }
